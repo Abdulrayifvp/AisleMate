@@ -1,0 +1,110 @@
+﻿[
+    {
+      "product_name": "Basmati Rice",
+      "price": 5.99,
+      "aisle_no": 7,
+      "rack_no": 2
+    },
+    {
+      "product_name": "Chicken",
+      "price": 8.99,
+      "aisle_no": 12,
+      "rack_no": 1
+    },
+    {
+      "product_name": "Onions",
+      "price": 1.49,
+      "aisle_no": 3,
+      "rack_no": 4
+    },
+    {
+      "product_name": "Garlic",
+      "price": 0.99,
+      "aisle_no": 3,
+      "rack_no": 5
+    },
+    {
+      "product_name": "Ginger",
+      "price": 1.29,
+      "aisle_no": 3,
+      "rack_no": 5
+    },
+    {
+      "product_name": "Yogurt",
+      "price": 2.49,
+      "aisle_no": 2,
+      "rack_no": 3
+    },
+    {
+      "product_name": "Tomatoes",
+      "price": 2.99,
+      "aisle_no": 3,
+      "rack_no": 2
+    },
+    {
+      "product_name": "Biryani Masala",
+      "price": 3.49,
+      "aisle_no": 5,
+      "rack_no": 4
+    },
+    {
+      "product_name": "Turmeric Powder",
+      "price": 1.99,
+      "aisle_no": 5,
+      "rack_no": 4
+    },
+    {
+      "product_name": "Coriander Powder",
+      "price": 1.79,
+      "aisle_no": 5,
+      "rack_no": 4
+    },
+    {
+      "product_name": "Cumin Seeds",
+      "price": 1.89,
+      "aisle_no": 5,
+      "rack_no": 5
+    },
+    {
+      "product_name": "Bay Leaves",
+      "price": 1.59,
+      "aisle_no": 5,
+      "rack_no": 5
+    },
+    {
+      "product_name": "Cinnamon Sticks",
+      "price": 2.29,
+      "aisle_no": 5,
+      "rack_no": 5
+    },
+    {
+      "product_name": "Cardamom Pods",
+      "price": 2.49,
+      "aisle_no": 5,
+      "rack_no": 5
+    },
+    {
+      "product_name": "Cloves",
+      "price": 1.99,
+      "aisle_no": 5,
+      "rack_no": 5
+    },
+    {
+      "product_name": "Ghee",
+      "price": 4.99,
+      "aisle_no": 2,
+      "rack_no": 4
+    },
+    {
+      "product_name": "Mint Leaves",
+      "price": 1.29,
+      "aisle_no": 3,
+      "rack_no": 1
+    },
+    {
+      "product_name": "Coriander Leaves",
+      "price": 1.29,
+      "aisle_no": 3,
+      "rack_no": 1
+    }
+  ]
