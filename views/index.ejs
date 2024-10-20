@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+</head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+    body{
+        background: #EEEEEE;
+        font-family: 'Roboto', sans-serif;
+    }
+    .card{
+        width: 300px;
+        border: none;
+        border-radius: 15px;
+    }
+    .adiv{
+        background: #04CB28;
+        border-radius: 15px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        font-size: 12px;
+        height: 46px;
+    }
+    .chat{
+        border: none;
+        background: #E2FFE8;
+        font-size: 10px;
+        border-radius: 20px;
+    }
+    .bg-white{
+        border: 1px solid #E7E7E9;
+        font-size: 10px;
+        border-radius: 20px;
+    }
+    .myvideo img{
+        border-radius: 20px
+    }
+    .dot{
+        font-weight: bold;
+    }
+    .form-control{
+        border-radius: 12px;
+        border: 1px solid #F0F0F0;
+        font-size: 8px;
+    }
+    .form-control:focus{
+        box-shadow: none;
+    }
+    .form-control::placeholder{
+        font-size: 8px;
+        color: #C4C4C4;
+    }
+</style>
+<body>
+    <div class="container d-flex justify-content-center">
+        <div class="card mt-5">
+            <div class="d-flex flex-row justify-content-between p-3 adiv text-white">
+                <i class="fas fa-chevron-left"></i>
+                <span class="pb-3">AisleMate</span>
+                <i class="fas fa-times"></i>
+            </div>
+            <div id="chat-box">
+                <!-- Example of initial chat message -->
+                <div class="d-flex flex-row p-3">
+                    <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-7.png" width="30" height="30">
+                    <div class="chat ml-2 p-3">Hello and thank you for visiting AisleMate. How can I help you today?</div>
+                </div>
+            </div>
+
+            <!-- Input area for the user to send a message -->
+            <div class="form-group px-3">
+                <textarea id="user-input" class="form-control" rows="5" placeholder="Type your message"></textarea>
+                <button id="send-btn" class="btn btn-primary mt-2">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to append a user message to the chat box
+        function appendUserMessage(message) {
+            $('#chat-box').append(`
+                <div class="d-flex flex-row p-3">
+                    <img src="https://img.icons8.com/color/48/000000/circled-user-male-skin-type-7.png" width="30" height="30">
+                    <div class="bg-white mr-2 p-3"><span class="text-muted">${message}</span></div>
+                </div>
+            `);
+        }
+
+        // Function to append a bot message to the chat box
+        function appendBotMessage(message) {
+            $('#chat-box').append(`
+                <div class="d-flex flex-row p-3">
+                    <img src="https://img.icons8.com/color/48/000000/circled-user-female-skin-type-7.png" width="30" height="30">
+                    <div class="chat ml-2 p-3">${message}</div>
+                </div>
+            `);
+        }
+
+        // Function to send the user input to the backend
+        function sendMessage() {
+            let userMessage = $('#user-input').val().trim();
+            if (userMessage === '') return;
+
+            // Append user message to the chat box
+            appendUserMessage(userMessage);
+
+            // Clear the input field
+            $('#user-input').val('');
+
+            // Send user message to the backend
+            $.ajax({
+                url: '/api/chat',  // Replace with your backend endpoint
+                method: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ message: userMessage }),
+                success: function(response) {
+                    // Append the bot response to the chat box
+                    appendBotMessage(response.message);
+                },
+                error: function() {
+                    // In case of an error, show a default message
+                    appendBotMessage("Sorry, something went wrong.");
+                }
+            });
+        }
+
+        // Trigger sendMessage function when the send button is clicked
+        $('#send-btn').on('click', function() {
+            sendMessage();
+        });
+
+        // Also trigger sendMessage function when the Enter key is pressed
+        $('#user-input').on('keypress', function(e) {
+            if (e.which == 13) {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
