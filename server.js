@@ -1,6 +1,6 @@
 const express = require('express');
 const { Pinecone } = require('@pinecone-database/pinecone');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+const { GoogleGenerativeAI, SchemaType } = require('@google/generative-ai');
 const csv = require('csv-parser');
 const fs = require('fs');
 require('dotenv').config()
@@ -41,16 +41,35 @@ const loadSupermarketData = () => {
     });
   };
 
+  const schema = {
+    description: "Array of product names",
+    type: SchemaType.ARRAY,
+    items: {
+      description: "Product name",
+      type: SchemaType.STRING,
+    },
+  };
+  
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-pro",
+    generationConfig: {
+      responseMimeType: "application/json",
+      responseSchema: schema,
+    },
+  });
 
 
 loadSupermarketData().then(data => 
     embbedData(data).then((ed)=>{
         upsertData(ed,data) 
     }).then(()=>{
-       ragQuery("I would like to prepare a biriyani").then((res)=>{
-        // console.log(res);
-        
-       })
+      model.generateContent(
+        "if the prompt specify a product then return that specific product or if the prompt specify a recipe or a plan then return a array of products to fullfil the need - prompt : I would like to prepare a biriyani",
+      ).then((result) => {
+        ragQuery(JSON.parse(result.response.text()))
+        console.log(JSON.parse(result.response.text()));
+      });
+       
     })
 )
 
@@ -88,27 +107,32 @@ const upsertData = async (embeddings,data) => {
 async function ragQuery(iquery) {
 
 const model = 'multilingual-e5-large';
-const query = [
-    'gee',
-  ];
+const query = iquery
+let matches = [] 
+  for (let i = 0; i < query.length; i++) {
+    let temp =[]
+    temp.push(query[i])
+    const embedding = await pinecone.inference.embed(
+      model,
+      temp,
+      { inputType: 'query' } 
+    );
   
-  const embedding = await pinecone.inference.embed(
-    model,
-    query,
-    { inputType: 'query' }
-  );
-
-
-  const queryResponse = await index.namespace("ns1").query({
-    topK: 1,
-    vector: embedding[0].values,
-    includeValues: false,
-    includeMetadata: true
-  });
-  
-  console.log(queryResponse);
+    const queryResponse = await index.namespace("ns1").query({
+      topK: 1,
+      vector: embedding[0].values,
+      includeValues: false,
+      includeMetadata: true
+    });
+    matches.push(queryResponse.matches[0]);
+  }
+  console.log(matches);
   
 }
+
+
+
+
 
 
 app.post('/query', async (req, res) => {
